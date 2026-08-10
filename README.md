@@ -100,6 +100,12 @@ Run the smoke suite:
 pytest -m smoke
 ```
 
+Or use the Android helper script, which sets the local Android/Appium defaults:
+
+```bash
+bash scripts/run_android_tests.sh -m smoke
+```
+
 Run CRUD scenarios:
 
 ```bash
