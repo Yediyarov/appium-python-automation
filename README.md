@@ -63,6 +63,7 @@ artifacts/           Runtime screenshots/logs, not committed
    - Version: `15.9`
    - Version code: `150902`
    - Package: `org.tasks`
+   - Launch activity: `com.todoroo.astrid.activity.TaskListActivity`
    - Local filename: `apps/tasks-org-15.9.apk`
    - SHA-256: `8ecaaca526f42ce2f08f95abfd15381a23a8d57863a5e86fd680d757d4a9f9c9`
 
@@ -74,6 +75,8 @@ artifacts/           Runtime screenshots/logs, not committed
    export TASKS_APK_PATH="$PWD/apps/tasks-org-15.9.apk"
    export APPIUM_SERVER_URL="http://127.0.0.1:4723"
    export ANDROID_DEVICE_NAME="Android Emulator"
+   export APP_PACKAGE="org.tasks"
+   export APP_ACTIVITY="com.todoroo.astrid.activity.TaskListActivity"
    export NO_RESET=false
    export AUTO_GRANT_PERMISSIONS=true
    ```

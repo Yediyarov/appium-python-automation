@@ -22,12 +22,14 @@ def create_android_driver(settings: Settings) -> webdriver.Remote:
 
     if settings.tasks_apk_path:
         options.app = str(settings.tasks_apk_path)
-    else:
+
+    if settings.app_package:
         options.app_package = settings.app_package
+
+    if settings.app_activity:
         options.app_activity = settings.app_activity
 
     options.set_capability("appium:uiautomator2ServerInstallTimeout", 60_000)
     options.set_capability("appium:adbExecTimeout", 60_000)
 
     return webdriver.Remote(settings.appium_server_url, options=options)
-

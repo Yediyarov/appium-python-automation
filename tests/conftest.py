@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from mobile_automation.artifacts import save_screenshot
+from mobile_automation.artifacts import try_save_screenshot
 from mobile_automation.config import Settings
 from mobile_automation.driver_factory import create_android_driver
 
@@ -37,10 +37,12 @@ def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo):
     if appium_driver is None:
         return
 
-    screenshot_path = save_screenshot(appium_driver, settings.screenshot_dir, item.name)
+    screenshot_path = try_save_screenshot(appium_driver, settings.screenshot_dir, item.name)
+    if screenshot_path is None:
+        return
+
     html_plugin = item.config.pluginmanager.getplugin("html")
     if html_plugin:
         extra = getattr(report, "extra", [])
         extra.append(html_plugin.extras.image(str(screenshot_path)))
         report.extra = extra
-

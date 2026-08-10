@@ -9,6 +9,8 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
 export TASKS_APK_PATH="${TASKS_APK_PATH:-$PROJECT_ROOT/apps/tasks-org-15.9.apk}"
 export APPIUM_SERVER_URL="${APPIUM_SERVER_URL:-http://127.0.0.1:4723}"
 export ANDROID_DEVICE_NAME="${ANDROID_DEVICE_NAME:-Android Emulator}"
+export APP_PACKAGE="${APP_PACKAGE:-org.tasks}"
+export APP_ACTIVITY="${APP_ACTIVITY:-com.todoroo.astrid.activity.TaskListActivity}"
 export NO_RESET="${NO_RESET:-false}"
 export AUTO_GRANT_PERMISSIONS="${AUTO_GRANT_PERMISSIONS:-true}"
 
@@ -24,4 +26,3 @@ if [[ $# -eq 0 ]]; then
 fi
 
 .venv/bin/pytest "$@"
-

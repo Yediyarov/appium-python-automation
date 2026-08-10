@@ -9,14 +9,17 @@ from screens.task_editor_screen import TaskEditorScreen
 
 class TasksListScreen(BaseScreen):
     READY_CANDIDATES = [
+        (AppiumBy.ID, "org.tasks:id/body_empty"),
         (AppiumBy.ID, "org.tasks:id/fab"),
+        (AppiumBy.ACCESSIBILITY_ID, "Create new task"),
         (AppiumBy.ACCESSIBILITY_ID, "New task"),
         (AppiumBy.ACCESSIBILITY_ID, "Add task"),
-        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().textContains("Tasks")'),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("My Tasks")'),
     ]
 
     ADD_TASK_CANDIDATES = [
         (AppiumBy.ID, "org.tasks:id/fab"),
+        (AppiumBy.ACCESSIBILITY_ID, "Create new task"),
         (AppiumBy.ACCESSIBILITY_ID, "New task"),
         (AppiumBy.ACCESSIBILITY_ID, "Add task"),
         (AppiumBy.ACCESSIBILITY_ID, "Add"),
@@ -29,6 +32,7 @@ class TasksListScreen(BaseScreen):
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Skip")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Not now")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("No thanks")'),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Continue without sync")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("OK")'),
     ]
 

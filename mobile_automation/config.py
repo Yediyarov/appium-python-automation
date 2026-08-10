@@ -43,7 +43,10 @@ class Settings:
             android_platform_version=os.getenv("ANDROID_PLATFORM_VERSION") or None,
             tasks_apk_path=_optional_path_from_env("TASKS_APK_PATH"),
             app_package=os.getenv("APP_PACKAGE") or "org.tasks",
-            app_activity=os.getenv("APP_ACTIVITY") or None,
+            app_activity=(
+                os.getenv("APP_ACTIVITY")
+                or "com.todoroo.astrid.activity.TaskListActivity"
+            ),
             no_reset=_bool_from_env("NO_RESET", default=False),
             auto_grant_permissions=_bool_from_env("AUTO_GRANT_PERMISSIONS", default=True),
             command_timeout_seconds=int(os.getenv("APPIUM_COMMAND_TIMEOUT_SECONDS", "120")),

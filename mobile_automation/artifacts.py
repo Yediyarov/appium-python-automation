@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 
+from selenium.common.exceptions import WebDriverException
+
 
 def safe_artifact_name(value: str) -> str:
     return "".join(
@@ -17,3 +19,10 @@ def save_screenshot(driver, directory: Path, name: str) -> Path:
     path = directory / f"{timestamp}_{safe_artifact_name(name)}.png"
     driver.save_screenshot(str(path))
     return path
+
+
+def try_save_screenshot(driver, directory: Path, name: str) -> Path | None:
+    try:
+        return save_screenshot(driver, directory, name)
+    except WebDriverException:
+        return None
