@@ -1,0 +1,25 @@
+.DS_Store
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime artifacts
+artifacts/
+reports/
+
+# Internal project notes and local analysis.
+docs/
+
+# Local application binaries should be downloaded/pinned locally, not committed.
+apps/*.apk
+apps/*.aab
+apps/*.ipa
+
+# Internal local notes.
+.agents/

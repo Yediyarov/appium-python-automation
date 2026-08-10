@@ -1,0 +1,43 @@
+[project]
+name = "tasks-appium-automation"
+version = "0.1.0"
+description = "Appium automation framework for the Tasks.org Android app."
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "appium-python-client>=5.0.0,<6.0.0",
+    "pytest>=8.3.0,<9.0.0",
+    "pytest-html>=4.1.0,<5.0.0",
+    "selenium>=4.27.0,<5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.8.0,<1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["mobile_automation*", "screens*"]
+exclude = ["tests*", "apps*", "artifacts*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+markers = [
+    "android: tests that require an Android device or emulator",
+    "smoke: minimal app launch and critical path checks",
+    "crud: task create/read/update/delete scenarios",
+    "regression: stable end-to-end regression scenarios",
+    "navigation: navigation and back behavior checks",
+    "state: app restart and persistence checks",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
