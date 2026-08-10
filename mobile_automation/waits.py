@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import TypeVar
 
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import (
+    ElementNotInteractableException,
+    NoSuchElementException,
+    StaleElementReferenceException,
+)
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
 Locator = tuple[str, str]
-T = TypeVar("T")
 
 
 class Waits:
@@ -29,25 +31,41 @@ class Waits:
         )
 
     def first_visible(self, locators: Iterable[Locator]) -> WebElement:
-        last_error: TimeoutException | NoSuchElementException | None = None
-        for locator in locators:
-            try:
-                return self.visible(locator)
-            except (TimeoutException, NoSuchElementException) as error:
-                last_error = error
+        locator_list = list(locators)
 
-        raise TimeoutException(
-            f"None of the locator candidates became visible: {locators}"
-        ) from last_error
+        def find_first_visible(driver: WebDriver) -> WebElement | bool:
+            for locator in locator_list:
+                try:
+                    element = driver.find_element(*locator)
+                    if element.is_displayed():
+                        return element
+                except (NoSuchElementException, StaleElementReferenceException):
+                    continue
+            return False
+
+        return WebDriverWait(self.driver, self.timeout_seconds).until(
+            find_first_visible,
+            f"None of the locator candidates became visible: {locator_list}",
+        )
 
     def first_clickable(self, locators: Iterable[Locator]) -> WebElement:
-        last_error: TimeoutException | NoSuchElementException | None = None
-        for locator in locators:
-            try:
-                return self.clickable(locator)
-            except (TimeoutException, NoSuchElementException) as error:
-                last_error = error
+        locator_list = list(locators)
 
-        raise TimeoutException(
-            f"None of the locator candidates became clickable: {locators}"
-        ) from last_error
+        def find_first_clickable(driver: WebDriver) -> WebElement | bool:
+            for locator in locator_list:
+                try:
+                    element = driver.find_element(*locator)
+                    if element.is_displayed() and element.is_enabled():
+                        return element
+                except (
+                    ElementNotInteractableException,
+                    NoSuchElementException,
+                    StaleElementReferenceException,
+                ):
+                    continue
+            return False
+
+        return WebDriverWait(self.driver, self.timeout_seconds).until(
+            find_first_clickable,
+            f"None of the locator candidates became clickable: {locator_list}",
+        )

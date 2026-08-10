@@ -26,13 +26,13 @@ class TasksListScreen(BaseScreen):
     ]
 
     ONBOARDING_DISMISS_CANDIDATES = [
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Continue without sync")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Get started")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Continue")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Next")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Skip")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Not now")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("No thanks")'),
-        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Continue without sync")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("OK")'),
     ]
 

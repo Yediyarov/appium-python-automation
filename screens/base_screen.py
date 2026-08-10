@@ -47,10 +47,11 @@ class BaseScreen:
             return False
 
     def tap_first_if_visible(self, locators: Iterable[Locator], timeout_seconds: int = 2) -> bool:
-        for locator in locators:
-            if self.tap_if_visible(locator, timeout_seconds=timeout_seconds):
-                return True
-        return False
+        try:
+            Waits(self.driver, timeout_seconds).first_clickable(locators).click()
+            return True
+        except TimeoutException:
+            return False
 
     def text_is_visible(self, text: str, timeout_seconds: int = 2) -> bool:
         locator = (AppiumBy.ANDROID_UIAUTOMATOR, f'new UiSelector().text("{text}")')
