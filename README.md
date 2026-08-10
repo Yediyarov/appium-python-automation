@@ -83,7 +83,7 @@ artifacts/           Runtime screenshots/logs, not committed
    ```bash
    emulator -list-avds
    emulator -avd <your-avd-name>
-   appium
+   bash scripts/start_appium.sh
    ```
 
 You can also run the local environment check:
