@@ -14,9 +14,29 @@ export APP_ACTIVITY="${APP_ACTIVITY:-com.todoroo.astrid.activity.TaskListActivit
 export NO_RESET="${NO_RESET:-false}"
 export AUTO_GRANT_PERMISSIONS="${AUTO_GRANT_PERMISSIONS:-true}"
 
-if [[ ! -f "$TASKS_APK_PATH" ]]; then
-  echo "TASKS_APK_PATH does not point to an APK: $TASKS_APK_PATH" >&2
+fail_preflight() {
+  echo "Android test preflight failed: $1" >&2
   exit 1
+}
+
+if [[ ! -f "$TASKS_APK_PATH" ]]; then
+  fail_preflight "TASKS_APK_PATH does not point to an APK: $TASKS_APK_PATH"
+fi
+
+if ! command -v adb >/dev/null 2>&1; then
+  fail_preflight "adb was not found. Check ANDROID_HOME: $ANDROID_HOME"
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+  fail_preflight "curl was not found and is required to check Appium server status"
+fi
+
+if ! curl --silent --fail "$APPIUM_SERVER_URL/status" >/dev/null; then
+  fail_preflight "Appium server is not reachable at $APPIUM_SERVER_URL. Start it with: bash scripts/start_appium.sh"
+fi
+
+if ! adb devices | awk 'NR > 1 && $2 == "device" { found = 1 } END { exit !found }'; then
+  fail_preflight "no Android emulator/device is connected. Start an emulator before running tests"
 fi
 
 cd "$PROJECT_ROOT"

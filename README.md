@@ -100,19 +100,23 @@ bash scripts/check_environment.sh
 Run the smoke suite:
 
 ```bash
-pytest -m smoke
-```
-
-Or use the Android helper script, which sets the local Android/Appium defaults:
-
-```bash
 bash scripts/run_android_tests.sh -m smoke
 ```
+
+The Android helper script sets local defaults and validates that the APK,
+Appium server, and Android emulator/device are available before pytest starts.
 
 Run CRUD scenarios:
 
 ```bash
-pytest -m crud
+bash scripts/run_android_tests.sh -m crud
+```
+
+If your shell already exports all required variables, pytest can be invoked
+directly:
+
+```bash
+pytest -m smoke
 ```
 
 Generate an HTML report:
