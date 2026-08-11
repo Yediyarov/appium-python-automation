@@ -30,6 +30,13 @@ class Waits:
             ec.element_to_be_clickable(locator)
         )
 
+    def invisible(self, locator: Locator) -> bool:
+        return bool(
+            WebDriverWait(self.driver, self.timeout_seconds).until(
+                ec.invisibility_of_element_located(locator)
+            )
+        )
+
     def first_visible(self, locators: Iterable[Locator]) -> WebElement:
         locator_list = list(locators)
 

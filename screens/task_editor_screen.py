@@ -7,8 +7,10 @@ from screens.base_screen import BaseScreen
 
 class TaskEditorScreen(BaseScreen):
     TITLE_FIELD_CANDIDATES = [
-        (AppiumBy.ID, "org.tasks:id/title"),
-        (AppiumBy.ID, "org.tasks:id/task_title"),
+        (
+            AppiumBy.ANDROID_UIAUTOMATOR,
+            'new UiSelector().className("android.widget.EditText").instance(0)',
+        ),
         (AppiumBy.CLASS_NAME, "android.widget.EditText"),
     ]
 
@@ -38,8 +40,13 @@ class TaskEditorScreen(BaseScreen):
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("OK")'),
     ]
 
+    def wait_until_ready(self) -> TaskEditorScreen:
+        self.waits.first_visible(self.TITLE_FIELD_CANDIDATES)
+        return self
+
     def enter_title(self, title: str) -> TaskEditorScreen:
         title_field = self.waits.first_visible(self.TITLE_FIELD_CANDIDATES)
+        title_field.click()
         title_field.clear()
         title_field.send_keys(title)
         return self

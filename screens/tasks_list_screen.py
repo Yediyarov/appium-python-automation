@@ -59,17 +59,26 @@ class TasksListScreen(BaseScreen):
 
     def open_new_task(self) -> TaskEditorScreen:
         self.tap_first(self.ADD_TASK_CANDIDATES)
-        return TaskEditorScreen(self.driver, self.settings)
+        return TaskEditorScreen(self.driver, self.settings).wait_until_ready()
 
     def open_task(self, title: str) -> TaskEditorScreen:
         self.tap(self._task_title_locator(title))
-        return TaskEditorScreen(self.driver, self.settings)
+        return TaskEditorScreen(self.driver, self.settings).wait_until_ready()
+
+    def complete_task(self, title: str) -> TasksListScreen:
+        self.tap(self._task_complete_box_locator(title))
+        return self
 
     def assert_task_visible(self, title: str) -> TasksListScreen:
         try:
             self.find_visible(self._task_title_locator(title))
         except TimeoutException as error:
             raise AssertionError(f"Expected task to be visible in task list: {title}") from error
+        return self
+
+    def assert_task_not_visible(self, title: str) -> TasksListScreen:
+        if not self.waits.invisible(self._task_title_locator(title)):
+            raise AssertionError(f"Expected task to be hidden from task list: {title}")
         return self
 
     def task_is_visible(self, title: str) -> bool:
@@ -81,3 +90,23 @@ class TasksListScreen(BaseScreen):
             AppiumBy.ANDROID_UIAUTOMATOR,
             self.TASK_TITLE_CANDIDATES_TEMPLATE[0].format(title=escaped_title),
         )
+
+    def _task_complete_box_locator(self, title: str) -> tuple[str, str]:
+        return (
+            AppiumBy.XPATH,
+            "//android.widget.TextView"
+            f"[@resource-id='org.tasks:id/title' and @text={self._xpath_literal(title)}]"
+            "/parent::android.widget.RelativeLayout"
+            "/android.widget.ImageView[@resource-id='org.tasks:id/completeBox']",
+        )
+
+    @staticmethod
+    def _xpath_literal(value: str) -> str:
+        if "'" not in value:
+            return f"'{value}'"
+
+        if '"' not in value:
+            return f'"{value}"'
+
+        parts = value.split("'")
+        return "concat(" + ', "\"\'\"", '.join(f"'{part}'" for part in parts) + ")"

@@ -25,7 +25,9 @@ def test_user_can_edit_task_title(driver, settings):
     tasks = TasksListScreen(driver, settings).dismiss_initial_prompts().wait_until_ready()
 
     tasks.open_new_task().enter_title(original_title).save().assert_task_visible(original_title)
-    tasks.open_task(original_title).enter_title(updated_title).save().assert_task_visible(updated_title)
+    tasks.open_task(original_title).enter_title(updated_title).save().assert_task_visible(
+        updated_title
+    ).assert_task_not_visible(original_title)
 
 
 @pytest.mark.android
@@ -36,5 +38,4 @@ def test_user_can_complete_task(driver, settings):
     tasks = TasksListScreen(driver, settings).dismiss_initial_prompts().wait_until_ready()
 
     tasks.open_new_task().enter_title(task_title).save().assert_task_visible(task_title)
-    tasks.open_task(task_title).complete().wait_until_ready()
-
+    tasks.complete_task(task_title).wait_until_ready().assert_task_not_visible(task_title)
