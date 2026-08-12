@@ -71,3 +71,9 @@ class TaskEditorScreen(BaseScreen):
         from screens.tasks_list_screen import TasksListScreen
 
         return TasksListScreen(self.driver, self.settings)
+
+    def go_back_to_list(self):
+        self.driver.back()
+        from screens.tasks_list_screen import TasksListScreen
+
+        return TasksListScreen(self.driver, self.settings).wait_until_ready()
