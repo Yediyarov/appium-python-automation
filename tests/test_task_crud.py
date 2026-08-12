@@ -39,3 +39,14 @@ def test_user_can_complete_task(driver, settings):
 
     tasks.open_new_task().enter_title(task_title).save().assert_task_visible(task_title)
     tasks.complete_task(task_title).wait_until_ready().assert_task_not_visible(task_title)
+
+
+@pytest.mark.android
+@pytest.mark.crud
+@pytest.mark.regression
+def test_user_can_delete_task(driver, settings):
+    task_title = unique_task_title("Delete task")
+    tasks = TasksListScreen(driver, settings).dismiss_initial_prompts().wait_until_ready()
+
+    tasks.open_new_task().enter_title(task_title).save().assert_task_visible(task_title)
+    tasks.open_task(task_title).delete().wait_until_ready().assert_task_not_visible(task_title)

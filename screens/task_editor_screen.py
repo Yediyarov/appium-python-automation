@@ -29,7 +29,9 @@ class TaskEditorScreen(BaseScreen):
     ]
 
     DELETE_CANDIDATES = [
+        (AppiumBy.ACCESSIBILITY_ID, "Delete task"),
         (AppiumBy.ACCESSIBILITY_ID, "Delete"),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("Delete task")'),
         (AppiumBy.ID, "org.tasks:id/menu_delete"),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Delete")'),
     ]
