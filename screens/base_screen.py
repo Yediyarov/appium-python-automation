@@ -64,6 +64,13 @@ class BaseScreen:
         )
         return self.driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, selector)
 
+    def restart_current_app(self) -> None:
+        if not self.settings.app_package:
+            raise ValueError("APP_PACKAGE is required to restart the app")
+
+        self.driver.terminate_app(self.settings.app_package)
+        self.driver.activate_app(self.settings.app_package)
+
     def dismiss_common_system_dialogs(self) -> None:
         candidates = [
             (AppiumBy.ID, "com.android.permissioncontroller:id/permission_allow_button"),
