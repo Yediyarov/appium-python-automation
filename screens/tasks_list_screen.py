@@ -25,6 +25,17 @@ class TasksListScreen(BaseScreen):
         (AppiumBy.ACCESSIBILITY_ID, "Add"),
     ]
 
+    SEARCH_BUTTON_CANDIDATES = [
+        (AppiumBy.ID, "org.tasks:id/menu_search"),
+        (AppiumBy.ACCESSIBILITY_ID, "Search"),
+        (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("Search")'),
+    ]
+
+    SEARCH_FIELD_CANDIDATES = [
+        (AppiumBy.ID, "org.tasks:id/search_src_text"),
+        (AppiumBy.CLASS_NAME, "android.widget.AutoCompleteTextView"),
+    ]
+
     ONBOARDING_DISMISS_CANDIDATES = [
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Continue without sync")'),
         (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Get started")'),
@@ -67,6 +78,14 @@ class TasksListScreen(BaseScreen):
 
     def complete_task(self, title: str) -> TasksListScreen:
         self.tap(self._task_complete_box_locator(title))
+        return self
+
+    def search_for(self, query: str) -> TasksListScreen:
+        self.tap_first(self.SEARCH_BUTTON_CANDIDATES)
+        search_field = self.waits.first_visible(self.SEARCH_FIELD_CANDIDATES)
+        search_field.click()
+        search_field.clear()
+        search_field.send_keys(query)
         return self
 
     def assert_task_visible(self, title: str) -> TasksListScreen:

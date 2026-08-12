@@ -32,6 +32,7 @@ markers = [
     "crud: task create/read/update/delete scenarios",
     "regression: stable end-to-end regression scenarios",
     "navigation: navigation and back behavior checks",
+    "search: search and filtering scenarios",
     "state: app restart and persistence checks",
 ]
 
