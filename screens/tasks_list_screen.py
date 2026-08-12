@@ -88,6 +88,14 @@ class TasksListScreen(BaseScreen):
         search_field.send_keys(query)
         return self
 
+    def restart_app(self) -> TasksListScreen:
+        if not self.settings.app_package:
+            raise ValueError("APP_PACKAGE is required to restart the app")
+
+        self.driver.terminate_app(self.settings.app_package)
+        self.driver.activate_app(self.settings.app_package)
+        return self.dismiss_initial_prompts().wait_until_ready()
+
     def assert_task_visible(self, title: str) -> TasksListScreen:
         try:
             self.find_visible(self._task_title_locator(title))
